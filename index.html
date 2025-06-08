@@ -1,121 +1,105 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2575.5">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Insurance Quiz</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; margin: 0; background: #f4f4f4; }
+    .step { display: none; }
+    .active { display: block; }
+    button { padding: 12px 20px; margin-top: 20px; font-size: 16px; }
+    .options label { display: block; margin: 8px 0; }
+    .final { font-size: 20px; padding: 20px; background: white; border-radius: 8px; }
+    .call-btn { display: inline-block; background: #007aff; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; margin-top: 20px; }
   </style>
+  <script>
+    let ageOK = false;
+    let healthOK = false;
+
+    function goTo(step) {
+      document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+      document.getElementById(step).classList.add('active');
+    }
+
+    function setAge(value) {
+      ageOK = value === '45-60';
+      goTo('step2');
+    }
+
+    function setHealth(value) {
+      healthOK = value === 'excellent' || value === 'good';
+      goTo('step3');
+    }
+
+    function finishQuiz() {
+      const state = document.getElementById('state').value;
+      const qualifiedStates = ['FL', 'TX', 'GA'];
+      const isQualified = ageOK && healthOK && qualifiedStates.includes(state);
+
+      goTo('final');
+      if (isQualified) {
+        document.getElementById('qualified').style.display = 'block';
+        document.getElementById('fallback').style.display = 'none';
+        if (typeof cbq === 'function') {
+          cbq('track', 'Contact', {
+            eventID: 'quizCall_' + Date.now(),
+            method: 'click_to_call'
+          });
+        }
+      } else {
+        document.getElementById('qualified').style.display = 'none';
+        document.getElementById('fallback').style.display = 'block';
+      }
+    }
+  </script>
 </head>
-<body>
-<p class="p1">&lt;!DOCTYPE html&gt;</p>
-<p class="p1">&lt;html lang="en"&gt;</p>
-<p class="p1">&lt;head&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8" /&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"/&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;title&gt;Insurance Quiz&lt;/title&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>body { font-family: sans-serif; padding: 20px; margin: 0; background: #f4f4f4; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.step { display: none; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.active { display: block; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>button { padding: 12px 20px; margin-top: 20px; font-size: 16px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.options label { display: block; margin: 8px 0; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.final { font-size: 20px; padding: 20px; background: white; border-radius: 8px; }</p>
-<p class="p1"><span class="Apple-converted-space">    </span>.call-btn { display: inline-block; background: #007aff; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; margin-top: 20px; }</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;script&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>let ageOK = false;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>let healthOK = false;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function goTo(step) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>document.querySelectorAll('.step').forEach(el =&gt; el.classList.remove('active'));</p>
-<p class="p1"><span class="Apple-converted-space">      </span>document.getElementById(step).classList.add('active');</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function setAge(value) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>ageOK = value === '45-60';</p>
-<p class="p1"><span class="Apple-converted-space">      </span>goTo('step2');</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function setHealth(value) {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>healthOK = value === 'excellent' || value === 'good';</p>
-<p class="p1"><span class="Apple-converted-space">      </span>goTo('step3');</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">    </span>function finishQuiz() {</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const state = document.getElementById('state').value;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const qualifiedStates = ['FL', 'TX', 'GA']; // replace with your states</p>
-<p class="p1"><span class="Apple-converted-space">      </span>const isQualified = ageOK &amp;&amp; healthOK &amp;&amp; qualifiedStates.includes(state);</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">      </span>goTo('final');</p>
-<p class="p1"><span class="Apple-converted-space">      </span>if (isQualified) {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('qualified').style.display = 'block';</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('fallback').style.display = 'none';</p>
-<p class="p1"><span class="Apple-converted-space">        </span>// Fire Meta event</p>
-<p class="p1"><span class="Apple-converted-space">        </span>if (typeof cbq === 'function') {</p>
-<p class="p1"><span class="Apple-converted-space">          </span>cbq('track', 'Contact', {</p>
-<p class="p1"><span class="Apple-converted-space">            </span>eventID: 'quizCall_' + Date.now(),</p>
-<p class="p1"><span class="Apple-converted-space">            </span>method: 'click_to_call'</p>
-<p class="p1"><span class="Apple-converted-space">          </span>});</p>
-<p class="p1"><span class="Apple-converted-space">        </span>}</p>
-<p class="p1"><span class="Apple-converted-space">      </span>} else {</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('qualified').style.display = 'none';</p>
-<p class="p1"><span class="Apple-converted-space">        </span>document.getElementById('fallback').style.display = 'block';</p>
-<p class="p1"><span class="Apple-converted-space">      </span>}</p>
-<p class="p1"><span class="Apple-converted-space">    </span>}</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</p>
-<p class="p1">&lt;/head&gt;</p>
-<p class="p1">&lt;body onload="goTo('step1')"&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="step1" class="step active"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2&gt;How old are you?&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="options"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;label&gt;&lt;input type="radio" name="age" onclick="setAge('45-60')"&gt; 45–60&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;label&gt;&lt;input type="radio" name="age" onclick="setAge('61-70')"&gt; 61–70&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;label&gt;&lt;input type="radio" name="age" onclick="setAge('71-83')"&gt; 71–83&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="step2" class="step"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2&gt;How would you rate your health?&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div class="options"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;label&gt;&lt;input type="radio" name="health" onclick="setHealth('excellent')"&gt; Excellent&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;label&gt;&lt;input type="radio" name="health" onclick="setHealth('good')"&gt; Good&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;label&gt;&lt;input type="radio" name="health" onclick="setHealth('fair')"&gt; Fair&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;label&gt;&lt;input type="radio" name="health" onclick="setHealth('poor')"&gt; Poor&lt;/label&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="step3" class="step"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;h2&gt;What state do you live in?&lt;/h2&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;select id="state"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;option value="FL"&gt;Florida&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;option value="TX"&gt;Texas&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;option value="GA"&gt;Georgia&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;option value="CA"&gt;California&lt;/option&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/select&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;button onclick="finishQuiz()"&gt;See My Options&lt;/button&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;div id="final" class="step final"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="qualified" style="display: none;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>✅ You're pre-qualified! <span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;br&gt;&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;a class="call-btn" href="tel:18885551234"&gt;Call Now to Claim Your Benefit&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="fallback" style="display: none;"&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>Sorry, we’re unable to match you at this time. <span class="Apple-converted-space"> </span></p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;br&gt;&lt;br&gt;</p>
-<p class="p1"><span class="Apple-converted-space">      </span>&lt;a class="call-btn" href="tel:18885559999"&gt;Call to Learn About Other Options&lt;/a&gt;</p>
-<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
-<p class="p1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</p>
-<p class="p2"><br></p>
-<p class="p1">&lt;/body&gt;</p>
-<p class="p1">&lt;/html&gt;</p>
+<body onload="goTo('step1')">
+
+  <div id="step1" class="step active">
+    <h2>How old are you?</h2>
+    <div class="options">
+      <label><input type="radio" name="age" onclick="setAge('45-60')"> 45–60</label>
+      <label><input type="radio" name="age" onclick="setAge('61-70')"> 61–70</label>
+      <label><input type="radio" name="age" onclick="setAge('71-83')"> 71–83</label>
+    </div>
+  </div>
+
+  <div id="step2" class="step">
+    <h2>How would you rate your health?</h2>
+    <div class="options">
+      <label><input type="radio" name="health" onclick="setHealth('excellent')"> Excellent</label>
+      <label><input type="radio" name="health" onclick="setHealth('good')"> Good</label>
+      <label><input type="radio" name="health" onclick="setHealth('fair')"> Fair</label>
+      <label><input type="radio" name="health" onclick="setHealth('poor')"> Poor</label>
+    </div>
+  </div>
+
+  <div id="step3" class="step">
+    <h2>What state do you live in?</h2>
+    <select id="state">
+      <option value="FL">Florida</option>
+      <option value="TX">Texas</option>
+      <option value="GA">Georgia</option>
+      <option value="CA">California</option>
+    </select>
+    <br>
+    <button onclick="finishQuiz()">See My Options</button>
+  </div>
+
+  <div id="final" class="step final">
+    <div id="qualified" style="display: none;">
+      ✅ You're pre-qualified!
+      <br><br>
+      <a class="call-btn" href="tel:18885551234">Call Now to Claim Your Benefit</a>
+    </div>
+    <div id="fallback" style="display: none;">
+      Sorry, we’re unable to match you at this time.
+      <br><br>
+      <a class="call-btn" href="tel:18885559999">Call to Learn About Other Options</a>
+    </div>
+  </div>
+
 </body>
 </html>
